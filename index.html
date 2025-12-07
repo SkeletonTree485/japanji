@@ -1,12 +1,58 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-    </style>
+  <meta charset="UTF-8">
+  <title>Arasaka quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    #quiz-container {
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 20px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+    }
+
+    .question {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+    }
+
+    .answer {
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #888;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .answer:hover {
+      background-color: #eee;
+    }
+
+    #next-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      cursor: pointer;
+      display: none;
+    }
+  </style>
 </head>
 <body>
-<h1> test </h1>
+    <h1> Arasaka Quiz</h1>
+    <!-- You can design anything around this div -->
+    <div id="quiz-container">
+        <div id="question-box"></div>
+        <div id="answers-box"></div>
+        <button id="next-btn">Next Question</button>
+    </div>  
+
+    <script src="questions.js"></script>
+    <script src="quiz.js"></script>  
+
 </body>
 </html>
