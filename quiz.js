@@ -4,6 +4,9 @@ let score = 0;  // score??????????
 const questionBox = document.getElementById("question-box");
 const answersBox = document.getElementById("answers-box");
 const nextBtn = document.getElementById("next-btn");
+const correctSound = new Audio("correct.mp3");
+const wrongSound = new Audio("wrong.mp3");
+
 
 function loadQuestion() {
   const q = quizQuestions[currentQuestion];
@@ -27,9 +30,12 @@ function loadQuestion() {
 function handleAnswer(selectedIndex) {
   const q = quizQuestions[currentQuestion];
 
-  // score system????
+  // Play correct/wrong sound
   if (selectedIndex === q.correctIndex) {
     score++;
+    correctSound.play();
+  } else {
+    wrongSound.play();
   }
 
   // answers
