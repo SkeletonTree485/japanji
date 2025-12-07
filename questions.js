@@ -10,7 +10,7 @@ const quizQuestions = [
     correctIndex: 1
   },
   {
-    question: "Who is the founder of Arasaka",
+    question: "Who is the founder of Arasaka?",
     answers: ["Saburo Arasaka", "Johnny Silverhand", "Sasai Arasaka"],
     correctIndex: 2
   }
