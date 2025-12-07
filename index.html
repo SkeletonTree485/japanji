@@ -5,9 +5,6 @@
   <link rel="stylesheet" href="/styles.css">
   <title>Arasaka quiz</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
 
     #quiz-container {
       max-width: 500px;
@@ -35,7 +32,7 @@
       background-color: #eee;
     }
 
-    #next-btn {
+    .next-btn {
       margin-top: 20px;
       padding: 10px 20px;
       cursor: pointer;
@@ -44,12 +41,20 @@
   </style>
 </head>
 <body>
+    <header class="top-bar">
+        <a href="https://japanji.no1online.cz">
+            <img class="logo" src="https://japanji.no1online.cz/assets/logo/japanji-cbp.png" alt="Japanji Logo">
+        </a>
+    </header>  
+    <div>
+            <img class="img-logo" src="https://japanji.no1online.cz/assets/logo/japanji-alt.png" alt="Japanji Logo">
+    </div>
     <h1> Arasaka Quiz</h1>
-    <!-- You can design anything around this div -->
+    <!--  -->
     <div class="nice-container" id="quiz-container" >
         <div id="question-box"></div>
         <div id="answers-box"></div>
-        <button id="next-btn">Next Question</button>
+        <button id="next-btn" class="next-btn">Next Question</button>
     </div>  
 
     <script src="questions.js"></script>
