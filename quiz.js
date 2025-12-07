@@ -64,9 +64,20 @@ function showResults() {
   questionBox.innerHTML = `<h2>Quiz Finished!</h2>`;
   answersBox.innerHTML = `
     <p>Your score: <strong>${score}</strong> / ${quizQuestions.length}</p>
-    <p>(Results screen ready for future expansion: highscores, retry button, etc.)</p>
+    <button id="retry-btn">Retry</button>
   `;
   nextBtn.style.display = "none";
+
+  // Attach Retry button click handler
+  document.getElementById("retry-btn").addEventListener("click", retryQuiz);
+}
+
+function retryQuiz() {
+  currentQuestion = 0;
+  score = 0;
+  nextBtn.textContent = "Next Question";
+  nextBtn.style.display = "none";
+  loadQuestion();
 }
 
 // Start quiz
