@@ -64,7 +64,7 @@ function showResults() {
   questionBox.innerHTML = `<h2>Quiz Finished!</h2>`;
   answersBox.innerHTML = `
     <p>Your score: <strong>${score}</strong> / ${quizQuestions.length}</p>
-    <button id="retry-btn" class="next-btn">Retry</button>
+    <button id="retry-btn">Retry</button>
   `;
   nextBtn.style.display = "none";
 
