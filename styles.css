@@ -4,6 +4,36 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap")
 
+.rajdhani-light {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.rajdhani-regular {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.rajdhani-medium {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.rajdhani-semibold {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.rajdhani-bold {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
 /* ========================
    General Styles
 ======================== */
@@ -21,7 +51,7 @@ body {
     text-align: center;
     background-color: #d8d8d8;
     color: rgb(228, 4, 4);
-    font-family: 'Rajhani', sans-serif !important;
+    font-family: 'Rajdhani', sans-serif !important;
     text-shadow: 2.3px 2.3px rgba(0, 0, 0, 0.5);
 }
 
