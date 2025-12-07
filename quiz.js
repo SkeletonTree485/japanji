@@ -4,8 +4,8 @@ let score = 0;  // score??????????
 const questionBox = document.getElementById("question-box");
 const answersBox = document.getElementById("answers-box");
 const nextBtn = document.getElementById("next-btn");
-const correctSound = new Audio("correct.mp3");
-const wrongSound = new Audio("wrong.mp3");
+const correctSound = new Audio("assets/sounds/correct.mp3");
+const wrongSound = new Audio("assets/sounds/wrong.mp3");
 
 
 function loadQuestion() {
