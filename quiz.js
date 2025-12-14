@@ -35,9 +35,9 @@ function applyTheme(themeClass) {
 }
 
 /* ---------- Fake Console & Errors ---------- */
-function createFakeConsole() {
+function createFakeConsoleAlt() {
   const fc = document.createElement("div");
-  fc.id = "fake-console";
+  fc.id = "fake-console2";
   fc.style = `
     position: fixed;
     bottom: 10px;
@@ -51,14 +51,14 @@ function createFakeConsole() {
     padding: 5px;
     overflow-y: auto;
     border: 1px solid lime;
-    z-index: 2;
+    z-index: 2147483647;
   `;
-  document.body.appendChild(fc);
+  document.documentElement.appendChild(fc);
   return fc;
 }
 
-function triggerRandomErrors() {
-  const fakeConsole = document.getElementById("fake-console") || createFakeConsole();
+function triggerRandomErrorsAlt() {
+  const fakeConsoleAlt = document.getElementById("fake-console2") || createFakeConsoleAlt();
   setInterval(() => {
     const errors = [
       "CRITICAL ERROR: NullReferenceException at QuizEngine.js",
@@ -69,8 +69,8 @@ function triggerRandomErrors() {
       "SYSTEM FAILURE: Attempting recovery..."
     ];
     const msg = errors[Math.floor(Math.random() * errors.length)];
-    fakeConsole.innerHTML += msg + "<br>";
-    fakeConsole.scrollTop = fakeConsole.scrollHeight;
+    fakeConsoleAlt.innerHTML += msg + "<br>"; // <- fixed variable name
+    fakeConsoleAlt.scrollTop = fakeConsoleAlt.scrollHeight;
   }, 500);
 }
 
@@ -104,7 +104,7 @@ function showStartScreen() {
     }
 
     // start random console errors
-    triggerRandomErrors();
+    triggerRandomErrorsAlt();
 
     startQuiz();
   });
