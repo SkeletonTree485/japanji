@@ -5,7 +5,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap");
 
 @font-face {
-    font-family: 'Rajhani';
+    font-family: 'Rajdhani';
     src: url('assets/fonts/Rajhani-Medium') format('ttf');
 }
 
@@ -68,6 +68,7 @@ h1 {
     padding: 0px;
     color: rgb(218, 253, 21);
     font-size: xxxx-large;
+    font-weight: 700;
 }
 
 h3 {
@@ -80,7 +81,7 @@ h4 {
 
 p, a {
     color: white;
-    font-size: large;
+    font-size: x-large;
     line-height: 1.5;
 }
 
@@ -153,17 +154,17 @@ a:hover, .here {
 }
 
 /* theme helper classes for background + container + question */
-.theme-sun { /* warm orange theme */
+.theme-sumo { /* warm orange theme */
     --quiz-bg: linear-gradient(135deg, #f5af19, #f12711);
     --quiz-foreground: rgba(0,0,0,0.45);
-    --text-color: #0b0b0b;
+    --text-color: #ffffff;
 }
-.theme-flame { /* darker, fiery theme */
+.theme-bath { /* darker, fiery theme */
     --quiz-bg: linear-gradient(135deg, #1f1e1c, #f12711);
     --quiz-foreground: rgba(0,0,0,0.5);
     --text-color: #fffaf0;
 }
-.theme-night { /* moody dark */
+.theme-karaoke { /* moody dark */
     --quiz-bg: linear-gradient(135deg, #1b1b2f, #3a3a6a);
     --quiz-foreground: rgba(0,0,0,0.65);
     --text-color: #e6eefc;
@@ -175,9 +176,9 @@ a:hover, .here {
 .theme-error { --quiz-bg: repeating-linear-gradient(45deg,#ffb3b3 0 4px,#ffd9d9 4px 8px); --text-color: #5a0000; }
 
 /* Apply theme to the big background */
-.background.theme-sun { background: url('assets/image/background/lake-jungle-bamboo-shader.jpeg') center/cover no-repeat, var(--quiz-bg); }
-.background.theme-flame { background: radial-gradient(circle at 10% 10%, rgba(255,255,255,0.06), transparent 20%), var(--quiz-bg); }
-.background.theme-night { background: url('assets/image/background/night-sky.jpeg') center/cover no-repeat, var(--quiz-bg); }
+.background.theme-sumo { background: url('assets/image/background/lake-jungle-bamboo-shader.jpeg') center/cover no-repeat, var(--quiz-bg); }
+.background.theme-bath { background: radial-gradient(circle at 10% 10%, rgba(255,255,255,0.06), transparent 20%), var(--quiz-bg); }
+.background.theme-karaoke { background: url('assets/image/background/night-sky.jpeg') center/cover no-repeat, var(--quiz-bg); }
 .background.theme-start { background: linear-gradient(135deg,#4ef3c1,#22c1c3); }
 .background.theme-end { background: linear-gradient(135deg,#6a11cb,#2575fc); }
 .background.theme-error { background: var(--quiz-bg); }
@@ -190,18 +191,21 @@ a:hover, .here {
     margin: 8px auto;
     padding: 22px;
     background-color: rgba(106, 102, 102, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 4px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     transition: background 600ms ease-in-out, color 400ms ease-in-out, box-shadow 300ms;
     box-sizing: border-box;
-    border-radius: 8px;
+    border-radius: 1px;
 }
 
 .nice-container-header {
     margin: 0 0 8px 0;
     text-align: left;
+    font-size: x-large;
+    line-height: 1.5;
+    font-weight: 700;
     text-decoration: underline;
 }
 
@@ -214,6 +218,9 @@ a:hover, .here {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    font-size: x-large;
+    font-weight: 600;
+    line-height: 1.5;
     text-align: left;
     margin-left: 16px;
     padding-left: 16px;
@@ -222,12 +229,8 @@ a:hover, .here {
 
 .nice-container-info p {
     margin: 2px 0;
-}
-
-.save-info {
-    flex: 1;
-    margin: 0;
-    text-align: left;
+    font-size: large;
+    line-height: 1.5;
 }
 
 .mobile-not-available {
@@ -235,9 +238,9 @@ a:hover, .here {
 }
 
 /* When theme classes are applied to the container, use the CSS variables */
-.nice-container.theme-sun,
-.nice-container.theme-flame,
-.nice-container.theme-night,
+.nice-container.theme-sumo,
+.nice-container.theme-bath,
+.nice-container.theme-karaoke,
 .nice-container.theme-start,
 .nice-container.theme-end,
 .nice-container.theme-error {
@@ -251,9 +254,6 @@ a:hover, .here {
    Screen & elements used by JS
 ======================== */
 .screen { text-align: center; }
-
-.screen h2 { margin: 6px 0 16px; font-size: 1.6rem; }
-.screen p { margin: 6px 0 12px; font-size: 1rem; }
 
 /* question area */
 .question {
@@ -272,18 +272,51 @@ a:hover, .here {
 .answer {
   padding: 12px;
   margin: 8px 0;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 2px solid rgba(255,255,255,0.08);
   border-radius: 6px;
   cursor: pointer;
   font-weight: 600;
   transition: background-color 0.18s, transform 0.12s;
   text-shadow: 1.3px 1.3px rgba(0, 0, 0, 0.5);
-  color: var(--text-color, azure);
+  color: var(--text-color, #fff);
   background: rgba(255,255,255,0.02);
 }
 .answer:hover { transform: translateY(-2px); background: rgba(255,255,255,0.05); }
 
-/* feedback & buttons */
+
+.button, .next-btn {
+  padding: 12px 20px;
+  margin: 8px 0;
+  border: 2px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'Rajdhani', sans-serif;
+  transition: background-color 0.18s, transform 0.12s;
+  text-shadow: 1.3px 1.3px rgba(0, 0, 0, 0.5);
+  color: var(--text-color, azure);
+  background: rgba(255,255,255,0.02);
+  display: inline-block;
+  text-decoration: none;
+}
+
+.button:hover, .next-btn:hover {
+  background-color: rgba(255,255,255,0.06);
+  transform: translateY(-1px);
+}
+
+/* Optional smaller / simple variants */
+.button.small, .button--simple {
+  padding: 10px 16px;
+  margin-top: 12px;
+  border: 1px solid #888;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+
+
+ /*feedback & buttons 
 .next-btn {
   margin-top: 20px;
   padding: 10px 20px;
@@ -297,23 +330,19 @@ a:hover, .here {
 }
 
 .button {
-    margin: 5px;
-    margin-top: 5px;
-    padding: 16px 32px;
-    min-width: 250px;
-    min-height: 64px;
-    border-radius: 0;
-    color: white;
-    text-align: center;
-    font-size: large;
-    cursor: pointer;
-    font-family: 'Pixel485', sans-serif;
-    background-color: rgba(106, 102, 102, 0.3);
-    border: 3px solid #222;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+padding: 12px;
+  margin: 8px 0;
+  border: 2px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.18s, transform 0.12s;
+  text-shadow: 1.3px 1.3px rgba(0, 0, 0, 0.5);
+  color: var(--text-color, azure);
+  background: rgba(255,255,255,0.02);
 }
 
-/* smaller general button style retained for places where original used it */
+ smaller general button style retained for places where original used it 
 .button.small,
 .button--simple {
   padding: 12px 20px;
@@ -333,7 +362,7 @@ a:hover, .here {
 .button:hover, .next-btn:hover {
   background-color: rgba(255,255,255,0.06);
   text-decoration: none;
-}
+}*/
 
 /* feedback styles */
 .feedback.correct { color: #0a7b0a; }

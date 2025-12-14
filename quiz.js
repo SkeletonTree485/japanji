@@ -10,44 +10,59 @@ const wrongSound = new Audio("assets/sounds/wrong.mp3");
 const startSound = new Audio("assets/sounds/start.mp3");
 const winSound = new Audio("assets/sounds/win.mp3");
 
-// list of theme classes defined in CSS - used to clear old theme classes
-const THEME_CLASSES = ['theme-sun','theme-flame','theme-night','theme-start','theme-end','theme-error'];
+// themes
+const THEME_CLASSES = [
+  'theme-sumo',
+  'theme-bath',
+  'theme-karaoke',
+  'theme-start',
+  'theme-end',
+  'theme-error'
+];
 
 function clearThemesFrom(el) {
   THEME_CLASSES.forEach(c => el.classList.remove(c));
 }
 
 function applyTheme(themeClass) {
-  // apply to big background
   clearThemesFrom(backgroundEl);
-  if (themeClass) backgroundEl.classList.add(themeClass);
-
-  // apply to quiz container
   clearThemesFrom(quizContainer);
-  if (themeClass) quizContainer.classList.add(themeClass);
+  if (themeClass) {
+    backgroundEl.classList.add(themeClass);
+    quizContainer.classList.add(themeClass);
+  }
 }
 
 /* ---------- SCREENS ---------- */
+
+let mainMusic = new Audio("assets/sounds/main.mp3");
+mainMusic.loop = true; // loop the music
 
 function showStartScreen() {
   applyTheme('theme-start');
 
   quizContainer.innerHTML = `
     <div class="screen screen--start">
-      <h2>Welcome to Japanji</h2>
-      <p></p>
-      <div class="question">Are you ready to start?</div>
-      <div class="button" id="start-btn">Play game</div>
+      <h2>Welcome to Japanji!</h2>
+      <p class="nice-container-info">Are you ready to start?</p>
+      <div class="button" id="start-btn">Play the game</div>
     </div>
   `;
 
-  const startBtn = document.getElementById("start-btn");
-  if (startBtn) {
-    startBtn.addEventListener("click", () => {
-      try { startSound.play(); } catch (e) {}
-      startQuiz();
-    });
-  }
+  // Start playing the main background music
+  try { mainMusic.play(); } catch {}
+
+  document.getElementById("start-btn").addEventListener("click", () => {
+    try { 
+      startSound.play(); 
+    } catch {}
+
+    // Stop the main music when quiz starts
+    mainMusic.pause();
+    mainMusic.currentTime = 0;
+
+    startQuiz();
+  });
 }
 
 function startQuiz() {
@@ -59,19 +74,17 @@ function startQuiz() {
 function showQuestion() {
   const q = quizQuestions[currentQuestion];
 
-  // apply theme for this question (if defined), otherwise clear
-  if (q && q.backgroundClass) {
-    applyTheme(q.backgroundClass);
-  } else {
+  if (q.backgroundClass) applyTheme(q.backgroundClass);
+  else {
     clearThemesFrom(backgroundEl);
     clearThemesFrom(quizContainer);
   }
 
   quizContainer.innerHTML = `
     <div class="screen">
-      <div class="question" id="question-box">${q.question}</div>
-      <p> What will be your choice? </p>
-      <div id="answers" aria-live="polite"></div>
+      <div class="nice-container-header">${q.question}</div>
+      <p class="nice-container-info">What will be your choice?</p>
+      <div id="answers"></div>
     </div>
   `;
 
@@ -81,72 +94,81 @@ function showQuestion() {
     const div = document.createElement("div");
     div.className = "answer";
     div.textContent = answer;
-
-    div.addEventListener("click", () => handleAnswer(index, div));
-
+    div.onclick = () => handleAnswer(index, div);
     answersBox.appendChild(div);
   });
 }
 
 function handleAnswer(selectedIndex, clickedElement) {
   const q = quizQuestions[currentQuestion];
-  const answers = Array.from(document.querySelectorAll(".answer"));
+  const answers = document.querySelectorAll(".answer");
 
-  // lock answers
-  answers.forEach(el => el.style.pointerEvents = "none");
+  answers.forEach(a => a.style.pointerEvents = "none");
 
   const isCorrect = selectedIndex === q.correctIndex;
 
   if (isCorrect) {
     clickedElement.style.backgroundColor = "#c8f7c5";
-    try { correctSound.play(); } catch (e) {}
+    try { correctSound.play(); } catch {}
   } else {
     score--;
     clickedElement.style.backgroundColor = "#f7c5c5";
-    // highlight correct answer if present
-    if (answers[q.correctIndex]) answers[q.correctIndex].style.backgroundColor = "#c8f7c5";
-    try { wrongSound.play(); } catch (e) {}
+    answers[q.correctIndex].style.backgroundColor = "#c8f7c5";
+    try { wrongSound.play(); } catch {}
   }
 
-  // delay before feedback screen
-  setTimeout(() => {
-    showFeedbackScreen(isCorrect);
-  }, 1500);
+  setTimeout(() => showFeedbackScreen(isCorrect), 1500);
 }
 
 function showFeedbackScreen(isCorrect) {
-  // keep the current question's theme (already applied), but feedback screen has its own additional layout
   quizContainer.innerHTML = `
     <div class="screen">
       <h2 class="feedback ${isCorrect ? "correct" : "wrong"}">
         ${isCorrect ? "Correct!" : "Incorrect"}
       </h2>
-
       <p>Score: <strong>${score}</strong> / ${quizQuestions.length}</p>
-
-      <div class="button next-btn" id="next-btn">
+      <div class="button" id="next-btn">
         ${currentQuestion < quizQuestions.length - 1 ? "Next Question" : "Finish Quiz"}
       </div>
     </div>
   `;
 
-  const nextBtn = document.getElementById("next-btn");
-  nextBtn.addEventListener("click", () => {
-    // small chance to show a random error screen instead of advancing
-    const errorChance = 0.08; // 8% chance (tweakable)
-    if (Math.random() < errorChance) {
-      showErrorScreen();
-      return;
-    }
-
+  document.getElementById("next-btn").addEventListener("click", () => {
+    // advance ONCE
     currentQuestion++;
 
-    if (currentQuestion < quizQuestions.length) {
-      showQuestion();
+    const showError = Math.random() < 0.5;
+
+    if (showError) {
+      showErrorScreen();
     } else {
-      showEndScreen();
+      continueQuiz();
     }
   });
+}
+
+function continueQuiz() {
+  if (currentQuestion < quizQuestions.length) {
+    showQuestion();
+  } else {
+    showEndScreen();
+  }
+}
+
+function showErrorScreen() {
+  applyTheme('theme-error');
+
+  quizContainer.innerHTML = `
+    <div class="screen screen--error">
+      <h2>Internal Error</h2>
+      <p class="nice-container-header">Error code: NaN</p>
+      <div class="nice-container-info">Gathering error data.... 0%</div>
+      <div class="button" id="error-retry">Close</div>
+      <div class="button" id="error-retry">Report it to the developer</div>
+    </div>
+  `;
+
+  document.getElementById("error-retry").addEventListener("click", continueQuiz);
 }
 
 function showEndScreen() {
@@ -155,35 +177,12 @@ function showEndScreen() {
   quizContainer.innerHTML = `
     <div class="screen screen--end">
       <h2>You Win!</h2>
-      <p>Final score: <strong>${score}</strong> / ${quizQuestions.length}</p>
-      <div class="question">Thanks for playing!</div>
-      <div class="button" id="retry-btn">Retry</div>
+      <p>Final score: <strong>${score}</strong></p>
+      <div class="button" id="retry-btn">Restart</div>
     </div>
   `;
 
-  document.getElementById("retry-btn").addEventListener("click", () => {
-    showStartScreen();
-  });
-}
-
-/* small random error screen (optional support you permitted) */
-function showErrorScreen() {
-  applyTheme('theme-error');
-
-  quizContainer.innerHTML = `
-    <div class="screen screen--error">
-      <h2>Internal Error</h2>
-      <p>Error code: NaN</p>
-      <div class="question">Gathering error data....</div>
-      <div class="button" id="error-retry">Back to question</div>
-      <div class="button" id="error-home">Report error to the developer</div>
-    </div>
-  `;
-
-  document.getElementById("error-retry").addEventListener("click", () => {
-    // back to same question, keep score unchanged
-    showQuestion();
-  });
+  document.getElementById("retry-btn").addEventListener("click", showStartScreen);
 }
 
 /* ---------- INIT ---------- */
