@@ -41,7 +41,7 @@ function createFakeConsole() {
   fc.style = `
     position: fixed;
     bottom: 10px;
-    right: 10px;
+    left: 10px;
     width: 300px;
     height: 150px;
     background: rgba(0,0,0,0.85);
@@ -51,7 +51,7 @@ function createFakeConsole() {
     padding: 5px;
     overflow-y: auto;
     border: 1px solid lime;
-    z-index: 9998;
+    z-index: 2;
   `;
   document.body.appendChild(fc);
   return fc;

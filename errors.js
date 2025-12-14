@@ -36,7 +36,7 @@ function createFakeConsole() {
     padding: 5px;
     overflow-y: auto;
     border: 3px dashed lime;
-    z-index: 9998;
+    z-index: 3;
     mix-blend-mode: difference;
     text-shadow: 0 0 3px lime;
   `;
@@ -159,9 +159,6 @@ function spamPopups() {
   }, 3000);
 }
 
-// =====================
-// Everything else untouched
-// =====================
 function startAnnoyingErrors() {
   spamFakeConsole();
   spamPopups();
