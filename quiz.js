@@ -34,10 +34,10 @@ function showStartScreen() {
 
   quizContainer.innerHTML = `
     <div class="screen screen--start">
-      <h2>Welcome to the Quiz</h2>
-      <p>Test your knowledge.</p>
-      <div class="question">Prepare yourself for an unreliable and dramatic journey.</div>
-      <div class="button" id="start-btn">Start Quiz</div>
+      <h2>Welcome to Japanji</h2>
+      <p></p>
+      <div class="question">Are you ready to start?</div>
+      <div class="button" id="start-btn">Play game</div>
     </div>
   `;
 
@@ -70,6 +70,7 @@ function showQuestion() {
   quizContainer.innerHTML = `
     <div class="screen">
       <div class="question" id="question-box">${q.question}</div>
+      <p> What will be your choice? </p>
       <div id="answers" aria-live="polite"></div>
     </div>
   `;
@@ -153,9 +154,9 @@ function showEndScreen() {
 
   quizContainer.innerHTML = `
     <div class="screen screen--end">
-      <h2>Quiz Finished 🎉</h2>
+      <h2>You Win!</h2>
       <p>Final score: <strong>${score}</strong> / ${quizQuestions.length}</p>
-      <div class="question">Thanks for playing. The end is intentionally a bit odd.</div>
+      <div class="question">Thanks for playing!</div>
       <div class="button" id="retry-btn">Retry</div>
     </div>
   `;
@@ -171,20 +172,17 @@ function showErrorScreen() {
 
   quizContainer.innerHTML = `
     <div class="screen screen--error">
-      <h2>Unexpected Error</h2>
-      <p>Something glitched. This is probably intentional.</p>
-      <div class="question">An error occurred while processing your heroic choices.</div>
+      <h2>Internal Error</h2>
+      <p>Error code: NaN</p>
+      <div class="question">Gathering error data....</div>
       <div class="button" id="error-retry">Back to question</div>
-      <div class="button" id="error-home">Home</div>
+      <div class="button" id="error-home">Report error to the developer</div>
     </div>
   `;
 
   document.getElementById("error-retry").addEventListener("click", () => {
     // back to same question, keep score unchanged
     showQuestion();
-  });
-  document.getElementById("error-home").addEventListener("click", () => {
-    showStartScreen();
   });
 }
 

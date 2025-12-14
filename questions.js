@@ -1,19 +1,19 @@
 const quizQuestions = [
   {
     question: "Should they accept the gift from the sumo master?",
-    answers: ["Yes","No"],
+    answers: ["Nice! Gimme free stuff!","Politely decline the gift."],
     correctIndex: 1,
     backgroundClass: "theme-sun"
   },
   {
     question: "Should they take off their clothes?",
-    answers: ["No", "Yes"],
+    answers: ["Absolutely not, this is a family-friendly game!", "Absolutely, yes! I wanna see naked ppl!"],
     correctIndex: 1,
     backgroundClass: "theme-flame"
   },
   {
     question: "Should she continue singing?",
-    answers: ["Yes","No"],
+    answers: ["Wow! I like her beautiful voice","Who the fuck let her sing?"],
     correctIndex: 1,
     backgroundClass: "theme-sun"
   }
