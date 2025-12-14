@@ -171,7 +171,7 @@ a:hover, .here {
 }
 
 /* Start / End / Error unique themes */
-.theme-start { --quiz-bg: linear-gradient(135deg, #2bffb0, #22c1c3); --text-color: #001; }
+.theme-start { --quiz-bg: linear-gradient(135deg, #2bffb0, #22c1c3); --text-color: rgb(255, 255, 255); }
 .theme-end   { --quiz-bg: linear-gradient(135deg, #6a11cb, #2575fc); --text-color: #fff; }
 .theme-error { --quiz-bg: repeating-linear-gradient(45deg,#ffb3b3 0 4px,#ffd9d9 4px 8px); --text-color: #5a0000; }
 
