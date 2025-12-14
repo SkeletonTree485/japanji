@@ -1,40 +1,53 @@
 const quizContainer = document.getElementById("quiz-container");
+const backgroundEl = document.getElementById("background");
 
 let currentQuestion = 0;
 let score = 3;
 
 // sounds
-const correctSound = new Audio("assets/souns/correct.mp3");
-const wrongSound = new Audio("assets/sound/wrong.mp3");
-const menuSound = new Audio("assets/sounds/manu.mp3")
-const winSound = new Audio("assets/sounds/win.mp3")
+const correctSound = new Audio("assets/sounds/correct.mp3");
+const wrongSound = new Audio("assets/sounds/wrong.mp3");
+const startSound = new Audio("assets/sounds/start.mp3");
+const winSound = new Audio("assets/sounds/win.mp3");
 
-function applyBackground() {
-  const q = quizQuestions[currentQuestion];
+// list of theme classes defined in CSS - used to clear old theme classes
+const THEME_CLASSES = ['theme-sun','theme-flame','theme-night','theme-start','theme-end','theme-error'];
 
-  if (!q || !q.background) {
-    quizContainer.style.background = "";
-    return;
-  }
-
-  quizContainer.style.background = q.background;
-  quizContainer.style.backgroundSize = "cover";
-  quizContainer.style.backgroundPosition = "center";
+function clearThemesFrom(el) {
+  THEME_CLASSES.forEach(c => el.classList.remove(c));
 }
 
+function applyTheme(themeClass) {
+  // apply to big background
+  clearThemesFrom(backgroundEl);
+  if (themeClass) backgroundEl.classList.add(themeClass);
+
+  // apply to quiz container
+  clearThemesFrom(quizContainer);
+  if (themeClass) quizContainer.classList.add(themeClass);
+}
 
 /* ---------- SCREENS ---------- */
 
 function showStartScreen() {
+  applyTheme('theme-start');
+
   quizContainer.innerHTML = `
-    <div class="screen">
+    <div class="screen screen--start">
       <h2>Welcome to the Quiz</h2>
       <p>Test your knowledge.</p>
+      <div class="question">Prepare yourself for an unreliable and dramatic journey.</div>
       <div class="button" id="start-btn">Start Quiz</div>
     </div>
   `;
 
-  document.getElementById("start-btn").addEventListener("click", startQuiz);
+  const startBtn = document.getElementById("start-btn");
+  if (startBtn) {
+    startBtn.addEventListener("click", () => {
+      try { startSound.play(); } catch (e) {}
+      startQuiz();
+    });
+  }
 }
 
 function startQuiz() {
@@ -44,14 +57,20 @@ function startQuiz() {
 }
 
 function showQuestion() {
-  applyBackground();
-
   const q = quizQuestions[currentQuestion];
+
+  // apply theme for this question (if defined), otherwise clear
+  if (q && q.backgroundClass) {
+    applyTheme(q.backgroundClass);
+  } else {
+    clearThemesFrom(backgroundEl);
+    clearThemesFrom(quizContainer);
+  }
 
   quizContainer.innerHTML = `
     <div class="screen">
-      <div class="question">${q.question}</div>
-      <div id="answers"></div>
+      <div class="question" id="question-box">${q.question}</div>
+      <div id="answers" aria-live="polite"></div>
     </div>
   `;
 
@@ -70,7 +89,7 @@ function showQuestion() {
 
 function handleAnswer(selectedIndex, clickedElement) {
   const q = quizQuestions[currentQuestion];
-  const answers = document.querySelectorAll(".answer");
+  const answers = Array.from(document.querySelectorAll(".answer"));
 
   // lock answers
   answers.forEach(el => el.style.pointerEvents = "none");
@@ -79,12 +98,13 @@ function handleAnswer(selectedIndex, clickedElement) {
 
   if (isCorrect) {
     clickedElement.style.backgroundColor = "#c8f7c5";
-    correctSound.play();
+    try { correctSound.play(); } catch (e) {}
   } else {
     score--;
     clickedElement.style.backgroundColor = "#f7c5c5";
-    answers[q.correctIndex].style.backgroundColor = "#c8f7c5";
-    wrongSound.play();
+    // highlight correct answer if present
+    if (answers[q.correctIndex]) answers[q.correctIndex].style.backgroundColor = "#c8f7c5";
+    try { wrongSound.play(); } catch (e) {}
   }
 
   // delay before feedback screen
@@ -94,6 +114,7 @@ function handleAnswer(selectedIndex, clickedElement) {
 }
 
 function showFeedbackScreen(isCorrect) {
+  // keep the current question's theme (already applied), but feedback screen has its own additional layout
   quizContainer.innerHTML = `
     <div class="screen">
       <h2 class="feedback ${isCorrect ? "correct" : "wrong"}">
@@ -102,13 +123,21 @@ function showFeedbackScreen(isCorrect) {
 
       <p>Score: <strong>${score}</strong> / ${quizQuestions.length}</p>
 
-      <div class="button" id="next-btn">
+      <div class="button next-btn" id="next-btn">
         ${currentQuestion < quizQuestions.length - 1 ? "Next Question" : "Finish Quiz"}
       </div>
     </div>
   `;
 
-  document.getElementById("next-btn").addEventListener("click", () => {
+  const nextBtn = document.getElementById("next-btn");
+  nextBtn.addEventListener("click", () => {
+    // small chance to show a random error screen instead of advancing
+    const errorChance = 0.08; // 8% chance (tweakable)
+    if (Math.random() < errorChance) {
+      showErrorScreen();
+      return;
+    }
+
     currentQuestion++;
 
     if (currentQuestion < quizQuestions.length) {
@@ -120,17 +149,44 @@ function showFeedbackScreen(isCorrect) {
 }
 
 function showEndScreen() {
+  applyTheme('theme-end');
+
   quizContainer.innerHTML = `
-    <div class="screen">
+    <div class="screen screen--end">
       <h2>Quiz Finished 🎉</h2>
       <p>Final score: <strong>${score}</strong> / ${quizQuestions.length}</p>
+      <div class="question">Thanks for playing. The end is intentionally a bit odd.</div>
       <div class="button" id="retry-btn">Retry</div>
     </div>
   `;
 
-  document.getElementById("retry-btn").addEventListener("click", showStartScreen);
+  document.getElementById("retry-btn").addEventListener("click", () => {
+    showStartScreen();
+  });
+}
+
+/* small random error screen (optional support you permitted) */
+function showErrorScreen() {
+  applyTheme('theme-error');
+
+  quizContainer.innerHTML = `
+    <div class="screen screen--error">
+      <h2>Unexpected Error</h2>
+      <p>Something glitched. This is probably intentional.</p>
+      <div class="question">An error occurred while processing your heroic choices.</div>
+      <div class="button" id="error-retry">Back to question</div>
+      <div class="button" id="error-home">Home</div>
+    </div>
+  `;
+
+  document.getElementById("error-retry").addEventListener("click", () => {
+    // back to same question, keep score unchanged
+    showQuestion();
+  });
+  document.getElementById("error-home").addEventListener("click", () => {
+    showStartScreen();
+  });
 }
 
 /* ---------- INIT ---------- */
-
 showStartScreen();
