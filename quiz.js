@@ -9,6 +9,7 @@ const correctSound = new Audio("assets/sounds/correct2.mp3");
 const wrongSound = new Audio("assets/sounds/wrong2.mp3");
 const startSound = new Audio("assets/sounds/start2.mp3");
 const winSound = new Audio("assets/sounds/win.mp3");
+const creeperSound = new Audio("assets/sounds/creeper.mp3");
 
 // themes
 const THEME_CLASSES = [
@@ -157,6 +158,7 @@ function continueQuiz() {
 
 function showErrorScreen() {
   applyTheme('theme-error');
+  try { wrongSound.play(); } catch {}
 
   quizContainer.innerHTML = `
     <div class="screen screen--error">
@@ -171,7 +173,29 @@ function showErrorScreen() {
   document.getElementById("error-retry").addEventListener("click", continueQuiz);
 }
 
+function show404Screen() {
+  applyTheme('theme-error'); // same style as error screen
+  try { creeperSound.play(); } catch {}
+
+  quizContainer.innerHTML = `
+    <div class="screen screen--error">
+      <h2>404 Not Found</h2>
+      <p class="nice-container-header">This page doesn't exist</p>
+      <div class="nice-container-info">Returning to results...</div>
+      <div class="button" id="404-continue">Continue</div>
+    </div>
+  `;
+
+  document.getElementById("404-continue").addEventListener("click", showActualEndScreen);
+}
+
 function showEndScreen() {
+  // instead of showing the actual end screen immediately, show 404 first
+  show404Screen();
+}
+
+// renamed the original end screen to avoid recursion
+function showActualEndScreen() {
   applyTheme('theme-end');
 
   quizContainer.innerHTML = `
