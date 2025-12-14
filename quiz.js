@@ -5,9 +5,9 @@ let currentQuestion = 0;
 let score = 3;
 
 // sounds
-const correctSound = new Audio("assets/sounds/correct.mp3");
-const wrongSound = new Audio("assets/sounds/wrong.mp3");
-const startSound = new Audio("assets/sounds/start.mp3");
+const correctSound = new Audio("assets/sounds/correct2.mp3");
+const wrongSound = new Audio("assets/sounds/wrong2.mp3");
+const startSound = new Audio("assets/sounds/start2.mp3");
 const winSound = new Audio("assets/sounds/win.mp3");
 
 // themes
@@ -35,7 +35,7 @@ function applyTheme(themeClass) {
 
 /* ---------- SCREENS ---------- */
 
-let mainMusic = new Audio("assets/sounds/main.mp3");
+let mainMusic = new Audio("assets/sounds/correct3.mp3");
 mainMusic.loop = true; // loop the music
 
 function showStartScreen() {
