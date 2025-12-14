@@ -1,11 +1,27 @@
 const quizContainer = document.getElementById("quiz-container");
 
 let currentQuestion = 0;
-let score = 0;
+let score = 3;
 
 // sounds
-const correctSound = new Audio("correct.mp3");
-const wrongSound = new Audio("wrong.mp3");
+const correctSound = new Audio("assets/souns/correct.mp3");
+const wrongSound = new Audio("assets/sound/wrong.mp3");
+const menuSound = new Audio("assets/sounds/manu.mp3")
+const winSound = new Audio("assets/sounds/win.mp3")
+
+function applyBackground() {
+  const q = quizQuestions[currentQuestion];
+
+  if (!q || !q.background) {
+    quizContainer.style.background = "";
+    return;
+  }
+
+  quizContainer.style.background = q.background;
+  quizContainer.style.backgroundSize = "cover";
+  quizContainer.style.backgroundPosition = "center";
+}
+
 
 /* ---------- SCREENS ---------- */
 
@@ -23,11 +39,13 @@ function showStartScreen() {
 
 function startQuiz() {
   currentQuestion = 0;
-  score = 0;
+  score = 3;
   showQuestion();
 }
 
 function showQuestion() {
+  applyBackground();
+
   const q = quizQuestions[currentQuestion];
 
   quizContainer.innerHTML = `
@@ -60,10 +78,10 @@ function handleAnswer(selectedIndex, clickedElement) {
   const isCorrect = selectedIndex === q.correctIndex;
 
   if (isCorrect) {
-    score++;
     clickedElement.style.backgroundColor = "#c8f7c5";
     correctSound.play();
   } else {
+    score--;
     clickedElement.style.backgroundColor = "#f7c5c5";
     answers[q.correctIndex].style.backgroundColor = "#c8f7c5";
     wrongSound.play();

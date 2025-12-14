@@ -1,17 +1,20 @@
 const quizQuestions = [
   {
-    question: "Where is the HQ of Arasaka located in?",
-    answers: ["Night City", "Tokyo", "Kyoto", "Osaka"],
+    question: "Should they accept the gift from the sumo master?",
+    answers: ["Yes", "No"],
     correctIndex: 1
+    background: "linear-gradient(135deg, #f5af19, #f12711)"
   },
   {
-    question: "Who is the CEO of Arasaka as of 2077?",
-    answers: ["Saburo Arasaka", "Yorinobu Arasaka", "Hanako Arasaka", "Michiko Arasaka"],
+    question: "Should they take off their clothes?",
+    answers: ["No", "Yes"],
     correctIndex: 1
+    background: "linear-gradient(135deg, #1f1e1cff, #f12711)"
   },
   {
-    question: "Who is the founder of Arasaka?",
-    answers: ["Saburo Arasaka", "Johnny Silverhand", "Sasai Arasaka"],
-    correctIndex: 2
+    question: "Should she continue singing?",
+    answers: ["Yes","No"],
+    correctIndex: 1
+    background: "linear-gradient(135deg, #f5af19, #f12711)"
   }
 ];
