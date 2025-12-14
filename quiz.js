@@ -34,10 +34,48 @@ function applyTheme(themeClass) {
   }
 }
 
-/* ---------- SCREENS ---------- */
+/* ---------- Fake Console & Errors ---------- */
+function createFakeConsole() {
+  const fc = document.createElement("div");
+  fc.id = "fake-console";
+  fc.style = `
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 300px;
+    height: 150px;
+    background: rgba(0,0,0,0.85);
+    color: lime;
+    font-family: monospace;
+    font-size: 12px;
+    padding: 5px;
+    overflow-y: auto;
+    border: 1px solid lime;
+    z-index: 9998;
+  `;
+  document.body.appendChild(fc);
+  return fc;
+}
 
-let mainMusic = new Audio("assets/sounds/correct3.mp3");
-mainMusic.loop = true; // loop the music
+function triggerRandomErrors() {
+  const fakeConsole = document.getElementById("fake-console") || createFakeConsole();
+  setInterval(() => {
+    const errors = [
+      "CRITICAL ERROR: NullReferenceException at QuizEngine.js",
+      "Memory Leak Detected...",
+      "Unexpected token at line " + Math.floor(Math.random() * 100),
+      "Error: Cannot read property 'foo' of undefined",
+      "Warning: Stack overflow in main thread",
+      "SYSTEM FAILURE: Attempting recovery..."
+    ];
+    const msg = errors[Math.floor(Math.random() * errors.length)];
+    fakeConsole.innerHTML += msg + "<br>";
+    fakeConsole.scrollTop = fakeConsole.scrollHeight;
+  }, 500);
+}
+
+/* ---------- SCREENS ---------- */
+let mainMusic;
 
 function showStartScreen() {
   applyTheme('theme-start');
@@ -50,17 +88,23 @@ function showStartScreen() {
     </div>
   `;
 
-  // Start playing the main background music
-  try { mainMusic.play(); } catch {}
+  const startBtn = document.getElementById("start-btn");
+  startBtn.addEventListener("click", () => {
+    if (!mainMusic) {
+      mainMusic = new Audio("assets/sounds/correct3.mp3");
+      mainMusic.loop = true;
+      try { mainMusic.play(); } catch {}
+    }
 
-  document.getElementById("start-btn").addEventListener("click", () => {
-    try { 
-      startSound.play(); 
-    } catch {}
+    try { startSound.play(); } catch {}
 
-    // Stop the main music when quiz starts
-    mainMusic.pause();
-    mainMusic.currentTime = 0;
+    if (mainMusic) {
+      mainMusic.pause();
+      mainMusic.currentTime = 0;
+    }
+
+    // start random console errors
+    triggerRandomErrors();
 
     startQuiz();
   });
@@ -76,10 +120,7 @@ function showQuestion() {
   const q = quizQuestions[currentQuestion];
 
   if (q.backgroundClass) applyTheme(q.backgroundClass);
-  else {
-    clearThemesFrom(backgroundEl);
-    clearThemesFrom(quizContainer);
-  }
+  else clearThemesFrom(backgroundEl);
 
   quizContainer.innerHTML = `
     <div class="screen">
@@ -135,14 +176,12 @@ function showFeedbackScreen(isCorrect) {
   `;
 
   document.getElementById("next-btn").addEventListener("click", () => {
-    // advance ONCE
-    currentQuestion++;
-
     const showError = Math.random() < 0.5;
 
     if (showError) {
       showErrorScreen();
     } else {
+      currentQuestion++;
       continueQuiz();
     }
   });
@@ -166,15 +205,18 @@ function showErrorScreen() {
       <p class="nice-container-header">Error code: NaN</p>
       <div class="nice-container-info">Gathering error data.... 0%</div>
       <div class="button" id="error-retry">Close</div>
-      <div class="button" id="error-retry">Report it to the developer</div>
+      <div class="button" id="error-report">Report it to the developer</div>
     </div>
   `;
 
-  document.getElementById("error-retry").addEventListener("click", continueQuiz);
+  document.getElementById("error-retry").addEventListener("click", () => {
+    currentQuestion++;
+    continueQuiz();
+  });
 }
 
 function show404Screen() {
-  applyTheme('theme-error'); // same style as error screen
+  applyTheme('theme-error');
   try { creeperSound.play(); } catch {}
 
   quizContainer.innerHTML = `
@@ -190,11 +232,10 @@ function show404Screen() {
 }
 
 function showEndScreen() {
-  // instead of showing the actual end screen immediately, show 404 first
+  // prank 404 first
   show404Screen();
 }
 
-// renamed the original end screen to avoid recursion
 function showActualEndScreen() {
   applyTheme('theme-end');
 
