@@ -2,7 +2,7 @@ const quizContainer = document.getElementById("quiz-container");
 const backgroundEl = document.getElementById("background");
 
 let currentQuestion = 0;
-let score = 3;
+let score = 4;
 
 // sounds
 const correctSound = new Audio("assets/sounds/correct2.mp3");
@@ -203,7 +203,7 @@ function showStartScreen() {
 
 function startQuiz() {
   currentQuestion = 0;
-  score = 3;
+  score = 4;
   showQuestion();
 }
 
@@ -259,7 +259,7 @@ function showFeedbackScreen(isCorrect) {
       <h2 class="feedback ${isCorrect ? "correct" : "wrong"}">
         ${isCorrect ? "Correct!" : "Incorrect"}
       </h2>
-      <p>Score: <strong>${score}</strong> / ${quizQuestions.length}</p>
+      <p>Lifes left: <strong>${score}</strong> / ${quizQuestions.length}</p>
       <div class="button" id="next-btn">
         ${currentQuestion < quizQuestions.length - 1 ? "Next Question" : "Finish Quiz"}
       </div>
@@ -292,11 +292,11 @@ function showErrorScreen() {
 
   quizContainer.innerHTML = `
     <div class="screen screen--error">
-      <h2>Internal Error</h2>
+      <h2>Internal Error =^.^=</h2>
       <p class="nice-container-header">Error code: NaN</p>
       <div class="nice-container-info">Gathering error data.... 0%</div>
       <div class="button" id="error-retry">Close</div>
-      <div class="button" id="error-report">Report it to the developer</div>
+      <div class="button" id="error-report">Report it to the developer ^_^</div>
     </div>
   `;
 
@@ -313,7 +313,7 @@ function show404Screen() {
   quizContainer.innerHTML = `
     <div class="screen screen--error">
       <h2>404 Not Found</h2>
-      <p class="nice-container-header">This page doesn't exist</p>
+      <p class="nice-container-header">This page doesn't exist ₍^. .^₎Ⳋ</p>
       <div class="nice-container-info">Returning to results...</div>
       <div class="button" id="404-continue">Continue</div>
     </div>
@@ -329,11 +329,12 @@ function showEndScreen() {
 
 function showActualEndScreen() {
   applyTheme('theme-end');
+  try { correctSound.play(); } catch {}
 
   quizContainer.innerHTML = `
     <div class="screen screen--end">
-      <h2>You Win!</h2>
-      <p>Final score: <strong>${score}</strong></p>
+      <h2>You Win! ฅ^>⩊<^ฅ ^-^</h2>
+      <p>Lifes left: <strong>${score}</strong></p>
       <div class="button" id="retry-btn">Restart</div>
     </div>
   `;
