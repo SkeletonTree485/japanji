@@ -173,8 +173,8 @@ function showStartScreen() {
 
   quizContainer.innerHTML = `
     <div class="screen screen--start">
-      <h2>Welcome to Japanji!</h2>
-      <p class="nice-container-info">Are you ready to start?</p>
+      <h2>Welcome to Japanji! ^-^</h2>
+      <p class="nice-container-info">Are you ready to start? ฅ^>⩊<^ ฅ</p>
       <div class="button" id="start-btn">Play the game</div>
     </div>
   `;
@@ -257,7 +257,7 @@ function showFeedbackScreen(isCorrect) {
   quizContainer.innerHTML = `
     <div class="screen">
       <h2 class="feedback ${isCorrect ? "correct" : "wrong"}">
-        ${isCorrect ? "Correct!" : "Incorrect"}
+        ${isCorrect ? "Correct! ^-^" : "Incorrect （• ˕ •マ.ᐟ" }
       </h2>
       <p>Lifes left: <strong>${score}</strong> / ${quizQuestions.length}</p>
       <div class="button" id="next-btn">
